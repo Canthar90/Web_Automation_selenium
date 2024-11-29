@@ -17,6 +17,11 @@ chrome_options = Options()
 chrome_options.add_argument("--disable-search-engine-chocie-screen")
 
 
+download_path = os.getcwd()
+prefs = {'download.default_directory': download_path}
+chrome_options.add_experimental_option('prefs', prefs)
+
+
 service = Service("chromedriver-win64\chromedriver.exe")
 driver = webdriver.Chrome(options=chrome_options, service=service)
 driver.get("https://demoqa.com/login")
@@ -54,6 +59,17 @@ email_field.send_keys("johnsmith@example.com")
 current_address_field.send_keys("John Street 100 New York USA")
 permanent_address_field.send_keys("John Street 100 New York USA")
 driver.execute_script("arguments[0].click();", submit_button)
+
+
+# Get download section and click on it 
+download_section = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'item-7')))
+download_section.click()
+
+# Get download button and click on it 
+# download_button = driver.find_element(By.ID, "downloadButton")
+# driver.execute_script("argument[0].click();", download_button)
+download_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "downloadButton")))
+download_button.click()
 
 input("Press enter to close the browser")
 driver.quit()
